@@ -1,0 +1,108 @@
+---
+layout: post
+title: Kafka集群搭建过程
+date: 2020-05-23 18:37:00 +0800
+description: Linux安装Kafka以及Kafka集群搭建过程
+img:  # Add image post (optional)
+tags: [Kafka] # add tag
+---
+
+
+> 准备三台服务器，分别命名为server1(10.7.16.108)、server2(10.7.16.144)、server3(10.7.16.135)
+
+> 环境要求 jdk8
+
+> 系统centos7.3
+
+## 一、搭建zookeeper集群
+
+> 三个节点都要下载配置
+
+### 1.下载zookeeper
+```shell
+$ cd /home/innjoy/zookeeper
+$ wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+$ cd zookeeper-3.4.14
+$ cp conf/zoo_sample.cfg conf/zoo.cfg
+```
+### 2.修改zookeeper配置文件
+```shell
+$ vi /conf/zoo.cfg
+```
+增加下面配置信息
+```shell
+dataLogDir=/home/innjoy/zookeeper/logs
+dataDir=/home/innjoy/zookeeper/data
+server.1= 10.7.16.108:2888:3888
+server.2= 10.7.16.144:2888:3888
+server.3= 10.7.16.135:2888:3888
+```
+### 3.创建相关目录，三台节点都需要
+```shell
+$ mkdir -p /home/innjoy/zookeeper/zookeeper-3.4.14/{logs,data}
+```
+### 4.创建ServerID标识
+
+> 除了修改zoo.cfg配置文件外,zookeeper集群模式下还要配置一个myid文件,这个文件需要放在dataDir目录下。
+
+在192.168.1.148服务器上面创建myid文件，并设置值为1
+```shell
+$ echo "1" > /home/innjoy/zookeeper/data/myid
+```
+在192.168.1.149服务器上面创建myid文件，并设置值为2
+```shell
+$ echo "2" > /home/innjoy/zookeeper/data/myid
+```
+在192.168.1.150服务器上面创建myid文件，并设置值为3
+```shell
+$ echo "3" > /home/innjoy/zookeeper/data/myid
+```
+### 5.启动每个服务器上面的zookeeper节点
+
+分别在3台节点执行启动命令
+```shell
+$ ./bin/zkServer.sh start
+```
+查看节点zookeeper状态
+```shell
+$ ./bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /home/innjoy/zookeeper/zookeeper-3.4.14/bin/../conf/zoo.cfg
+Mode: leader
+```
+## 二、搭建kafka集群
+### 1.下载kafka
+
+> 三个节点都要下载配置
+
+```shell
+$ cd /home/innjoy/kafka
+$ wget http://mirror.bit.edu.cn/apache/kafka/2.2.0/kafka_2.11-2.2.0.tgz
+```
+### 2.修改kafka配置文件
+```shell 
+$ cd kafka_2.11-2.2.0/config
+$ vi server.properties
+```
+需要修改的内容如下：
+```shell 
+# The id of the broker. This must be set to a unique integer for each broker
+broker.id=2
+# A comma separated list of directories under which to store log files
+log.dirs=/home/innjoy/kafka/data
+# Zookeeper connection string
+zookeeper.connect=10.7.16.108:2181,10.7.16.144:2192,10.7.16.135:2181
+```
+### 3.启动kafka
+```shell 
+$ ./kafka-server-start.sh -daemon ../config/server.properties
+```
+### 4.验证是否启动kafka
+```shell 
+$ jps
+63938 Kafka
+62840 QuorumPeerMain
+63982 Jps
+```
+
+

@@ -1,0 +1,47 @@
+---
+layout: post
+title: v2ray帮助文档
+date: 2020-05-22 18:12:00 +0800
+description: V2Ray是近几年十分流行的网络工具，其功能强大，用途不限于突破防火墙，但因其能有效翻墙而广为人知。
+img:  # Add image post (optional)
+tags: [v2ray] # add tag
+---
+
+### V2Ray简介
+
+  V2Ray是近几年十分流行的网络工具，其功能强大，用途不限于突破防火墙，但因其能有效翻墙而广为人知。V2Ray有如下大放异彩的特点：
+
+* 开源。V2Ray是Project V的核心工具，源代码开源；
+* 多协议支持。传输层支持TCP、mKCP、WebSocket等，上层协议支持Socks、Shadowsocks、以及自定义的VMess等；
+* 多入口和多出口。V2Ray可同时支持多个入站和出站协议，每个协议独立工作；
+* 多平台支持。原生支持Windows、Linux、MacOS三大常用平台，安卓、iOS两大移动平台有丰富的第三方工具；
+* 隐蔽性。V2Ray流量可伪装成网页流量，更难被检测和干扰。
+
+与另一个知名的翻墙工具Shadowsocks(R)相比，V2ray和SSR区别在于：
+
+* V2Ray是一个框架/平台，而Shadowsocks(R)是一个代理工具；
+* V2Ray功能强大配置复杂，Shadowsocks(R)简单易用；
+* V2Ray性能更好，协议支持更完善。
+一句话总结：V2Ray更好更强大，但更难上手和用好
+
+
+### 安卓手机安装V2Ray客户端
+
+#### 1、下载v2rayNG_1.2.6.apk并安装，打开APP
+
+> v2rayNG_1.6.25.apk [下载地址](https://m9d2.xyz/file/v2rayNG_1.6.25.apk)
+
+![]({{site.baseurl}}/assets/img/20200522001.png){:height="500px" width="300px"}
+
+#### 2、点击右上角+按钮，然后点击从剪切板导入
+
+>需要提前复制url
+
+![]({{site.baseurl}}/assets/img/20200522002.png){:height="500px" width="300px"}
+
+![]({{site.baseurl}}/assets/img/20200522003.png){:height="500px" width="300px"}
+
+#### 3、点击右下角灰色的V按钮，如下图所示则说明vpn连接成功
+
+![]({{site.baseurl}}/assets/img/20200522004.png){:height="500px" width="300px"}
+

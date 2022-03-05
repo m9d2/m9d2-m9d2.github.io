@@ -1,0 +1,62 @@
+---
+layout: post
+title: acme.sh 自动替换ssl证书
+date: 2021-03-04 10:24:00 +0800
+img:  # Add image post (optional)
+tags: [shell] # add tag
+---
+
+
+
+### 简介
+
+acme.sh是github的开源项目，项目地址：https://github.com/acmesh-official/acme.sh
+
+该项目实现了从letsencrypt生成免费的证书并且将证书替换到nginx、Apache等服务器
+
+### 一、安装
+
+#### 1.命令安装
+```shell
+curl  https://get.acme.sh | sh -s email=my@example.com
+```
+#### 2.把 acme.sh 安装到你的 home 目录下:
+
+```shell
+~/.acme.sh/
+```
+并创建 一个 bash 的 alias, 方便你的使用: ``` alias acme.sh=~/.acme.sh/acme.sh ```
+
+#### 3.自动为你创建 cronjob, 每天 0:00 点自动检测所有的证书, 如果快过期了, 需要更新, 则会自动更新证书.
+
+### 二、生成证书
+acme.sh 实现了 acme 协议支持的所有验证协议. 一般有两种方式验证: http 和 dns 验证.这里使用 dns 验证
+```shell
+acme.sh --issue --dns dns_cf -d example.com --force
+```
+> --debug 添加改参数可打印出详细日志
+### 三、安装证书
+```shell
+acme.sh --install-cert -d example.com \
+--key-file        /home/ubuntu/certificate/example.key  \
+--fullchain-file /home/ubuntu/certificate/example.pem \
+--reloadcmd     "sudo nginx -s reload"
+```
+> -d：域名 --key-file：nginx ssl证书指向地址 --fullchain-file：nginx ssl证书指向地址
+
+### 四、更新证书
+目前证书在 60 天以后会自动更新, 你无需任何操作. 今后有可能会缩短这个时间, 不过都是自动的, 你不用关心.
+
+### 五、更新 acme.sh
+目前由于 acme 协议和 letsencrypt CA 都在频繁的更新, 因此 acme.sh 也经常更新以保持同步.
+
+升级 acme.sh 到最新版 :
+
+```shell
+acme.sh --upgrade
+```
+如果你不想手动升级, 可以开启自动升级:
+
+```shell
+acme.sh  --upgrade  --auto-upgrade
+```

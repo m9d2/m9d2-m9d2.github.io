@@ -1,0 +1,63 @@
+---
+layout: post
+title: Centos7下yum安装mongodb
+date: 2021-11-22 10:12:00 +0800
+description: 
+img:  # Add image post (optional)
+tags: [mongodb] # add tag
+---
+
+### 1.创建mongo repo源
+
+```shell
+vim /etc/yum.repos.d/mongodb.repo
+```
+
+### 2.把下面的内容复制到文件中 保存退出
+
+```shell
+[mongodb-org]
+name=MongoDB Repository
+baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/$releasever/mongodb-org/5.0/x86_64/
+gpgcheck=0
+enabled=1
+```
+
+### 3.安装mongo
+
+```shell
+yum -y install mongodb-org
+```
+
+### 4.修改 mongod.conf 配置文件
+
+```shell
+vim /etc/mongod.conf
+```
+
+### 5.启动mongo
+
+**启动mongodb ：**
+
+```shell
+systemctl start mongod.service
+```
+
+**停止mongodb ：**
+
+```shell
+systemctl stop mongod.service
+```
+
+**查到mongodb的状态：**
+
+```shell
+systemctl status mongod.service
+```
+
+**添加到开机启动：**
+
+```shell
+systemctl enable mongod.service
+```
+

@@ -1,0 +1,22 @@
+---
+layout: post
+title: 查看linux服务器磁盘空间占用情况
+date: 2021-11-09 11:12:00 +0800
+description:
+img:  # Add image post (optional)
+tags: [linux] # add tag
+---
+
+### 1、查看磁盘空间占用
+
+```shell
+df -h
+```
+### 2、查看当前目录内文件夹的大小
+
+```shell
+du -h --max-depth=1
+```
+> -h或–human-readable 以K，M，G为单位，提高信息的可读性。
+
+> –max-depth=目录层数 超过指定层数的目录后，予以忽略。

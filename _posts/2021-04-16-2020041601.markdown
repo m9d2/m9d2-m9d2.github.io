@@ -1,0 +1,57 @@
+---
+layout: post
+title: spring boot项目自定义数据源，mybatisplus分页、逻辑删除无效解决方法
+date: 2021-04-16 14:26:00 +0800
+img: /assets/img/head.png # Add image post (optional)
+tags: [java] # add tag
+---
+
+### Spring Boot项目中数据源的配置可以通过两种方式实现：
+
+1.application.yml或者application.properties配置
+
+2.注入DataSource及SqlSessionFactory两个Bean
+
+### 通过第二种方式配置数据源则按照MybatisPlus官方文档使用分页及逻辑删除插件会无效，解决思路是在初始化SqlSessionFactory将插件设置进去
+
+```java
+/**
+ * 逻辑删除插件
+ */
+@Bean
+public GlobalConfig globalConfig(){
+    GlobalConfig globalConfig=new GlobalConfig();
+    GlobalConfig.DbConfig dbConfig=new GlobalConfig.DbConfig();
+    dbConfig.setLogicDeleteValue("Y");
+    dbConfig.setLogicNotDeleteValue("N");
+    globalConfig.setDbConfig(dbConfig);
+    globalConfig.setSqlInjector(new LogicSqlInjector());
+    return globalConfig;
+}
+
+/**
+ * 分页插件
+ */
+@Bean
+public PaginationInterceptor paginationInterceptor(){
+    PaginationInterceptor paginationInterceptor=new PaginationInterceptor();
+    paginationInterceptor.setDialectType(DbType.MYSQL.getDb());
+    return paginationInterceptor;
+}
+
+@Bean(name = "sqlSessionFactory")
+public SqlSessionFactory sqlSessionFactory()throws Exception{
+    logger.info("初始化SqlSessionFactory");
+    String mapperLocations="classpath:mybatis/mapper/**/*.xml";
+    String configLocation="classpath:mybatis/mybatis-config.xml";
+    MybatisSqlSessionFactoryBean sqlSessionFactory=new MybatisSqlSessionFactoryBean();
+    sqlSessionFactory.setDataSource(dataSource()); //数据源
+    ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+    sqlSessionFactory.setMapperLocations(resolver.getResources(mapperLocations));
+    sqlSessionFactory.setConfigLocation(resolver.getResource(configLocation));
+    sqlSessionFactory.setTypeAliasesPackage("com.innjoy.pms.order.infrastructure.domain.model");
+    sqlSessionFactory.setGlobalConfig(globalConfig());
+    sqlSessionFactory.setPlugins(new Interceptor[]{paginationInterceptor()});
+    return sqlSessionFactory.getObject();
+}
+```
