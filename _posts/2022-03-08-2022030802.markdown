@@ -1,0 +1,26 @@
+---
+layout: post
+title: mysql8.0开启远程访问权限
+date: 2022-03-08 16:54:00 +0800
+description:
+img:  # Add image post (optional)
+tags: [mysql] # add tag
+---
+
+### 1.设置密码
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+```
+
+### 2.修改host
+
+```sql
+update user set host='%' where user='root';
+```
+
+### 3.刷新权限
+
+```sql
+flush privileges;
+```

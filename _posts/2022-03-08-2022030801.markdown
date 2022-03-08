@@ -1,0 +1,43 @@
+---
+layout: post
+title: gem 添加国内源
+date: 2022-03-08 16:53:00 +0800
+description:
+img:  # Add image post (optional)
+tags: [ruby] # add tag
+---
+
+### 查看当前使用的源地址
+
+```shell
+gem sources
+```
+
+### gem 删除默认源命令
+
+```shell
+gem sources --remove https://rubygems.org/
+```
+
+### gem 添加国内源
+
+```shell
+gem sources -a https://gems.ruby-china.com/
+
+###
+
+gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/
+```
+
+### 检测方法
+
+```shell
+gem sources -l
+```
+
+### 更新源的缓存
+
+```shell
+gem sources -u
+```
+
