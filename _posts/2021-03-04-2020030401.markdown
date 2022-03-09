@@ -31,10 +31,27 @@ curl  https://get.acme.sh | sh -s email=my@example.com
 
 ### 二、生成证书
 acme.sh 实现了 acme 协议支持的所有验证协议. 一般有两种方式验证: http 和 dns 验证.这里使用 dns 验证
+
+> 以DNSPod.cn为列
+
+1.首先设置API Key跟ID环境变量
+
 ```shell
-acme.sh --issue --dns dns_cf -d example.com --force
+export DP_Id="1234"
+export DP_Key="sADDsdasdgdsf"
 ```
+
+2.生成证书
+```shell
+acme.sh --issue --dns dns_dp -d example.com
+```
+
+> DP_Id跟DP_Key被保存~/.acme.sh/account.conf并在需要时被重用
+
 > --debug 添加改参数可打印出详细日志
+
+> 其他域名供应商参考：https://github.com/acmesh-official/acme.sh/wiki/dnsapi
+
 ### 三、安装证书
 ```shell
 acme.sh --install-cert -d example.com \
