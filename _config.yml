@@ -19,7 +19,7 @@ timezone:
 
 title: 冬至                      # the main title
 
-tagline: 山海自有归期，风雨自有相逢   # it will display as the sub-title
+tagline: hi there!   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   A minimal, responsive, and powerful Jekyll theme for presenting professional writing.
