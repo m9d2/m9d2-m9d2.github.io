@@ -17,9 +17,9 @@ prefer_datetime_locale:
 
 timezone:
 
-title: 冬至                      # the main title
+title: Gaoy's Blog                      # the main title
 
-tagline: hi there!   # it will display as the sub-title
+tagline: Hi there!   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   A minimal, responsive, and powerful Jekyll theme for presenting professional writing.
