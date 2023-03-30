@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring三级缓存决循环依赖的
+title: Spring三级缓存决循环依赖
 date: 2023-03-30 18:12:00 +0800
 description:
 img:  # Add image post (optional)
