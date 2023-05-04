@@ -1,0 +1,35 @@
+---
+layout: post
+title: Spring三级缓存决循环依赖
+date: 2023-03-30 18:12:00 +0800
+description:
+img:  # Add image post (optional)
+tags: [Java] # add tag
+---
+
+假设A和B的定义如下：
+
+```java
+public class A {
+    private B b;
+    public A(B b) {
+        this.b = b;
+    }
+}
+
+public class B {
+    private A a;
+    public B(A a) {
+        this.a = a;
+    }
+}
+
+```
+当Spring容器启动时，它会先创建A实例，但是在创建A实例的过程中发现需要依赖B实例，因此Spring会创建B实例并注入到A实例中，如下所示：
+
+1.创建A实例，发现需要B实例。
+2.创建B实例，并将其放入earlySingletonObjects缓存中。
+3.在创建B实例的过程中，发现需要A实例。因为A实例已经在第1步中创建了，因此可以直接从singletonObjects缓存中获取A实例，并将其注入到B实例中。
+4.将B实例放入singletonObjects缓存中。
+5.将A实例放入singletonObjects缓存中。
+这样，Spring就成功地解决了A和B的循环依赖问题。在整个过程中，Spring使用了三级缓存来保存Bean实例，通过提前暴露Bean实例的方式来解决循环依赖的问题。需要注意的是，如果A和B的作用域是prototype，则无法使用三级缓存来解决循环依赖的问题。
